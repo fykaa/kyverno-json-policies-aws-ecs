@@ -1,3 +1,4 @@
+# my repo
 apiVersion: json.kyverno.io/v1alpha1
 kind: ValidatingPolicy
 metadata:
@@ -24,3 +25,4 @@ spec:
       - message: When running tasks on EC2 instances, block access to EC2 metadata to prevent containers from inheriting instance roles. Use IAM roles for tasks instead.
         check:
           values:
+              # {jmespathexpresssion}
