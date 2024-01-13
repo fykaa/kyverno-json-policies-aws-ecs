@@ -5,7 +5,7 @@
 
 resource "aws_launch_template" "ecs_lt" {
   name_prefix   = "ecs-template"
-  image_id      = "ami-062c116e449466e7f" # NECESSARY. The AMI serves as the foundation for an EC2 instance. It includes the operating system, software, and any configurations you want on the instance. Without a specified AMI, Terraform doesn't know what image to use when launching the EC2 instances. Amazon Linux 2 AMI (HVM), SSD Volume Type
+  image_id      = "ami-01d83f77e6a272e35" # NECESSARY. The AMI serves as the foundation for an EC2 instance. It includes the operating system, software, and any configurations you want on the instance. Without a specified AMI, Terraform doesn't know what image to use when launching the EC2 instances. Amazon Linux 2 AMI (HVM), SSD Volume Type
   instance_type = "t3.micro"
 
   # key_name               = "tempkey"
@@ -91,5 +91,21 @@ resource "aws_launch_template" "ecs_lt" {
 #   }
 # }
 
+resource "aws_instance" "ecs_instance" {
+  ami                    = aws_launch_template.ecs_lt.image_id
+  instance_type          = aws_launch_template.ecs_lt.instance_type
+  key_name               = aws_launch_template.ecs_lt.key_name
+  vpc_security_group_ids = aws_launch_template.ecs_lt.vpc_security_group_ids
 
+  # Other necessary configurations based on your use case
+  subnet_id              = aws_subnet.subnet.id
+  iam_instance_profile   = aws_launch_template.ecs_lt.iam_instance_profile[0].name
+  user_data              = aws_launch_template.ecs_lt.user_data
+  tags = {
+    Name = aws_launch_template.ecs_lt.tag_specifications[0].tags.Name
+  }
+}
 
+output "ecs_configuration_script" {
+  value = aws_instance.ecs_instance.user_data # Assuming user_data contains the content of ecs.sh
+}

@@ -1,3 +1,5 @@
+# Setting up the configuration for using Docker and AWS providers
+
 terraform {
   required_providers {
     docker = {
@@ -11,13 +13,11 @@ terraform {
   }
 }
 
-# configuring docker and aws as providers
+# Configuring docker and AWS as providers
 provider "docker" {}
 
 provider "aws" {
   region  = "us-west-1"
   profile = "fyka"
 }
-
-
 

@@ -1,3 +1,4 @@
+# Creating an AWS VPC with the certain CIDR range
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
 
@@ -6,6 +7,7 @@ resource "aws_vpc" "main" {
   }
 }
 
+# Creating a subnet within the previously defined VPC
 resource "aws_subnet" "subnet" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = cidrsubnet(aws_vpc.main.cidr_block, 8, 1) ## takes 10.0.0.0/16 --> 10.0.1.0/24
@@ -13,6 +15,7 @@ resource "aws_subnet" "subnet" {
   availability_zone       = var.availability_zones
 }
 
+# Creating an Internet Gateway and attaching it to the VPC
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
@@ -21,6 +24,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
+# Creating a route table and associating it with the VPC
 resource "aws_route_table" "rt" {
   vpc_id = aws_vpc.main.id
 
@@ -30,6 +34,7 @@ resource "aws_route_table" "rt" {
   }
 }
 
+# Associating the subnet with the previously created route table
 resource "aws_route_table_association" "subnet_route" {
   subnet_id      = aws_subnet.subnet.id
   route_table_id = aws_route_table.rt.id

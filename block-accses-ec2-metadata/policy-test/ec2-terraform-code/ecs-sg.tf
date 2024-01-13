@@ -1,3 +1,5 @@
+# Creating aws security group for tasks running in awsvpc (Amazon VPC) network mode.
+
 resource "aws_security_group" "sg" {
   name   = "ecs-sg"
   vpc_id = aws_vpc.main.id

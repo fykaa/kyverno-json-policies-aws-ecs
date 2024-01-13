@@ -1,4 +1,5 @@
 # ECS Cluster
+
 resource "aws_ecs_cluster" "cluster" {
   name = "cluster"
   setting {
@@ -7,7 +8,8 @@ resource "aws_ecs_cluster" "cluster" {
   }
 }
 
-# Task Definition
+# ECS Task Definition for network mode awsvpc
+
 resource "aws_ecs_task_definition" "task" {
   family                   = "service"
   network_mode             = "awsvpc"
@@ -33,9 +35,10 @@ resource "aws_ecs_task_definition" "task" {
   DEFINITION
 }
 
-# ECS Service
+# ECS Service with EC2 launch type
+
 resource "aws_ecs_service" "service" {
-  name             = "service"
+  name             = "fyka-service"
   cluster          = aws_ecs_cluster.cluster.id
   task_definition  = aws_ecs_task_definition.task.id
   desired_count    = 1
@@ -47,7 +50,7 @@ resource "aws_ecs_service" "service" {
     security_groups  = [aws_security_group.sg.id]
     subnets          = [aws_subnet.subnet.id]
   }
-#   lifecycle {
-#     ignore_changes = [task_definition]
-#   }
+  lifecycle {
+    ignore_changes = [task_definition]
+  }
 }
