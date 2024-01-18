@@ -1,0 +1,29 @@
+apiVersion: json.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: validate-ecs-container-insights-enabled
+  labels:
+    ecs.aws.tags.kyverno.io: ecs-cluster
+  annotations:
+    policies.kyverno.io/title: Validate ECS container insights are enabled
+    policies.kyverno.io/category: ECS Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/description: >-
+      This Policy ensures that ECS clusters have container
+      insights enabled.
+    policies.nirmata.io/remediation-docs: ""
+    policies.nirmata.io/remediation: ""
+spec:
+  rules:
+    - name: container-insights
+      assert:
+        all:
+        - message: ECS container insights are not enabled
+          check:
+            ~.(planned_values.root_module.resources[?type == 'aws_ecs_cluster']):
+                values:
+                    (!setting): false
+                    (length(setting[?name=='containerInsights'] || `[]`) > `0`): true
+                    ~.(setting[?name=='containerInsights'] || `[]`):
+                        value: enabled
+                        
