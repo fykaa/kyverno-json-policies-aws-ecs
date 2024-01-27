@@ -12,7 +12,7 @@
           "provider_name": "registry.terraform.io/hashicorp/aws",
           "schema_version": 1,
           "values": {
-            "container_definitions": "[{\"cpu\":512,\"essential\":true,\"image\":\"nginx:1.23.1\",\"memory\":2048,\"name\":\"fyka-task\",\"portMappings\":[{\"containerPort\":80,\"hostPort\":80}]}]",
+            "container_definitions": "[{\"cpu\":512,\"essential\":true,\"image\":\"nginx:1.23.1\",\"memory\":2048,\"name\":\"foo-task\",\"portMappings\":[{\"containerPort\":80,\"hostPort\":80}]}]",
             "cpu": "512",
             "ephemeral_storage": [],
             "execution_role_arn": null,
@@ -62,7 +62,7 @@
         ],
         "before": null,
         "after": {
-          "container_definitions": "[{\"cpu\":512,\"essential\":true,\"image\":\"nginx:1.23.1\",\"memory\":2048,\"name\":\"fyka-task\",\"portMappings\":[{\"containerPort\":80,\"hostPort\":80}]}]",
+          "container_definitions": "[{\"cpu\":512,\"essential\":true,\"image\":\"nginx:1.23.1\",\"memory\":2048,\"name\":\"foo-task\",\"portMappings\":[{\"containerPort\":80,\"hostPort\":80}]}]",
           "cpu": "512",
           "ephemeral_storage": [],
           "execution_role_arn": null,
@@ -122,9 +122,6 @@
         "full_name": "registry.terraform.io/hashicorp/aws",
         "version_constraint": "~> 4.0",
         "expressions": {
-          "profile": {
-            "constant_value": "fyka"
-          },
           "region": {
             "constant_value": "us-west-1"
           }
@@ -146,7 +143,7 @@
           "provider_config_key": "aws",
           "expressions": {
             "container_definitions": {
-              "constant_value": "  [\n    {\n      \"name\"      : \"fyka-task\",\n      \"image\"     : \"nginx:1.23.1\",\n      \"cpu\"       : 512,\n      \"memory\"    : 2048,\n      \"essential\" : true,\n      \"portMappings\" : [\n        {\n          \"containerPort\" : 80,\n          \"hostPort\"      : 80\n        }\n      ]\n    }\n  ]\n"
+              "constant_value": "  [\n    {\n      \"name\"      : \"foo-task\",\n      \"image\"     : \"nginx:1.23.1\",\n      \"cpu\"       : 512,\n      \"memory\"    : 2048,\n      \"essential\" : true,\n      \"portMappings\" : [\n        {\n          \"containerPort\" : 80,\n          \"hostPort\"      : 80\n        }\n      ]\n    }\n  ]\n"
             },
             "cpu": {
               "constant_value": 512

@@ -7,7 +7,7 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions    = <<DEFINITION
   [
     {
-      "name"      : "fyka-task",
+      "name"      : "foo-task",
       "image"     : "nginx:1.23.1",
       "cpu"       : 512,
       "memory"    : 2048,
@@ -21,4 +21,26 @@ resource "aws_ecs_task_definition" "task" {
     }
   ]
   DEFINITION
+}
+
+# Setting up the configuration for using Docker and AWS providers
+
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~>2.20.0"
+    }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+  }
+}
+
+# Configuring docker and AWS as providers
+provider "docker" {}
+
+provider "aws" {
+  region  = "us-west-1"
 }

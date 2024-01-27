@@ -13,19 +13,15 @@ metadata:
       tasks or between your tasks and other services that run within your Amazon VPC.
       The awsvpc network mode provides task-level network isolation for tasks 
       that run on Amazon EC2.
-    policies.nirmata.io/remediation-docs: ""
-    policies.nirmata.io/remediation: ""
-
 spec:
   rules:
     - name: check-awsvpc-network-mode
       match:
         any:
-        - type: aws_ecs_task_definition
+        - (planned_values.root_module.resources[?type=='aws_ecs_task_definition'] | length(@) > `0`): true
       assert:
         all:
         - message: ECS services and tasks are required to use awsvpc network mode.
           check:
-              values:
-                  (network_mode=='awsvpc'): true
-                
+            ~.(planned_values.root_module.resources[?type=='aws_ecs_task_definition'].values):
+                network_mode: awsvpc

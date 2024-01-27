@@ -16,6 +16,10 @@ To formalize our approach, it's prudent to establish a policy that ensures the u
 
 To evaluate and test the policy ensuring the presence of the `awsvpc` network mode in the Terraform plan payload, follow the steps outlined below:
 
+For testing this policy you will need to:
+- Make sure you have `kyverno-json` installed on the machine 
+- Properly authenticate with AWS
+
 1. **Initialize Terraform:**
     ```bash
     terraform init
@@ -33,12 +37,12 @@ To evaluate and test the policy ensuring the presence of the `awsvpc` network mo
 
 4. **Test the Policy with Kyverno:**
     ```
-   kyverno-json scan --payload payload.json --policy policy.yaml --pre-process "planned_values.root_module.resources"
+   kyverno-json scan --payload payload.json --policy policy.yaml
     ```
     
     a. **Test Policy Against Valid Payload:**
     ```
-    kyverno-json scan --policy validate-ecs-resource-tag.yaml --payload policy-test/good-payload.json --pre-process "planned_values.root_module.resources"
+    kyverno-json scan --policy check-aws-vpc-network-mode.yaml --payload policy-test/good-payload.json
     ```
 
     This produces the output:
@@ -53,7 +57,7 @@ To evaluate and test the policy ensuring the presence of the `awsvpc` network mo
 
     b. **Test Against Invalid Payload:**
     ```
-    kyverno-json scan --policy validate-ecs-resource-tag.yaml --payload policy-test/bad-payload.json --pre-process "planned_values.root_module.resources"
+    kyverno-json scan --policy check-aws-vpc-network-mode.yaml --payload policy-test/bad-payload.json
     ```
 
     This produces the output:
